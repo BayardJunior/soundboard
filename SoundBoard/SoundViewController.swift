@@ -13,16 +13,26 @@ import AVFoundation
 
 class SoundViewController: UIViewController {
     
+    @IBOutlet weak var adicionarOutlet: UIButton!
+    @IBOutlet weak var tocarOutlet: UIButton!
     @IBOutlet weak var gravarOutlet: UIButton!
     @IBOutlet weak var nomeDoAudio: UITextField!
     
     // var audioGravado : AVAudioRecorder = nil
     var audioGravado : AVAudioRecorder?
+    var tocaAudio : AVAudioPlayer?
+    
+    var audioURL : URL?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUpGravacao()
+        tocarOutlet.isEnabled = false
+        adicionarOutlet.isEnabled = false
+        
+        nomeDoAudio.addTarget(self, action: #selector(SoundViewController.verificaTexto), for: UIControlEvents.editingChanged)
+        
         
     }
     
@@ -40,7 +50,15 @@ class SoundViewController: UIViewController {
             
             let caminhoBase : String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first!
             let caminhoComponentes = [caminhoBase, "audio.m4a"]
-            let audioURL = NSURL.fileURL(withPathComponents: caminhoComponentes)!
+             audioURL = NSURL.fileURL(withPathComponents: caminhoComponentes)!
+            
+            /*
+            printar o caminho da url pra ver se realenmte tem algum aquivo la
+            ########
+                    print(audioURL)
+            ########
+            */
+            
             
             //criando as configuraçoes
             
@@ -50,7 +68,7 @@ class SoundViewController: UIViewController {
             configuracoes[AVNumberOfChannelsKey] = 2
             
             //Criação do objeto audioGravado
-            audioGravado = try AVAudioRecorder(url: audioURL, settings: configuracoes)
+            audioGravado = try AVAudioRecorder(url: audioURL!, settings: configuracoes)
             
             audioGravado!.prepareToRecord()
             
@@ -60,13 +78,49 @@ class SoundViewController: UIViewController {
         
     }
     
+    func verificaTexto(){
+
+        if nomeDoAudio.hasText && tocarOutlet.isEnabled {
+            adicionarOutlet.isEnabled = true
+        }else{
+          adicionarOutlet.isEnabled = false
+        }
+    }
+    
     @IBAction func gravar(_ sender: Any) {
+        if audioGravado!.isRecording {
+            //parar a gravaçao
+            audioGravado?.stop()
+            
+            //mudar o titulo do botao para "gravar"
+            gravarOutlet.setTitle("Gravar", for: .normal)
+            
+            tocarOutlet.isEnabled = true
+            
+        }else{
+            //começar a gravar
+            audioGravado?.record()
+            
+            tocarOutlet.isEnabled = false
+            //mudar o titulo do botao para "parar"
+            gravarOutlet.setTitle("Parar", for: .normal)
+            
+        }
     }
     
     @IBAction func tocar(_ sender: Any) {
+        do{
+        tocaAudio = try AVAudioPlayer(contentsOf: audioURL!)
+            tocaAudio!.play()
+        }catch let error as NSError{
+            print(error)
+        }
     }
     
     @IBAction func adicinoar(_ sender: Any) {
+        
+        
+        
         
     }
     

@@ -107,8 +107,10 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="adicionarOutlet" destination="bdy-sf-VVJ" id="89A-FT-lGP"/>
                         <outlet property="gravarOutlet" destination="RGY-Dl-efo" id="QjK-sg-2EI"/>
                         <outlet property="nomeDoAudio" destination="B1M-Fe-WPa" id="qAE-ov-C7y"/>
+                        <outlet property="tocarOutlet" destination="PKK-sN-EEv" id="Zt4-De-0C4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pLL-m7-dXB" userLabel="First Responder" sceneMemberID="firstResponder"/>
