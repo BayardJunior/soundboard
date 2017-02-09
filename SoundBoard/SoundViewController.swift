@@ -119,8 +119,16 @@ class SoundViewController: UIViewController {
     
     @IBAction func adicinoar(_ sender: Any) {
         
+        let contexto = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         
+        let musica = Sound(context: contexto)
         
+        musica.audio = NSData(contentsOf: audioURL!)
+        musica.nome = nomeDoAudio.text
+        
+        (UIApplication.shared.delegate as! AppDelegate).saveContext()
+        
+        navigationController!.popViewController(animated: true)
         
     }
     
