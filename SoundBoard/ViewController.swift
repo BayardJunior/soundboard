@@ -45,19 +45,19 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         //cria uma celula
         let cell = UITableViewCell()
         
-        let son = sons[indexPath.row]
+        let som = sons[indexPath.row]
         
-        cell.textLabel?.text = son.nome
+        cell.textLabel?.text = som.nome
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //pega o item selecionado
-        let son = sons[indexPath.row]
+        let som = sons[indexPath.row]
         
         do{
-            tocaAudio = try AVAudioPlayer(data: son.audio! as Data)
+            tocaAudio = try AVAudioPlayer(data: som.audio! as Data)
             tocaAudio?.play()
         }catch{}
         
@@ -70,7 +70,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         //deletando pelo deslizado
         if editingStyle == .delete{
-            let son = sons[indexPath.row]
+            let som = sons[indexPath.row]
             
             let contexto = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
             contexto.delete(son)
